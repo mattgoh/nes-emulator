@@ -26,6 +26,13 @@ pub struct CPU {
 }
 
 impl CPU{
+    /*
+    CPU works in a constant cycle:
+    - Fetch next exectuion instruction from the instruction memory
+    - Decode instruction
+    - Execute instruction
+    - Repeat cycle
+    */
     pub fn new() -> Self {
         CPU {
             register_a: 0,
@@ -35,6 +42,34 @@ impl CPU{
     }
 
     pub fn interpret(&mut self, program: Vec<u8>) {
-    todo!("")
+        self.program_counter = 0;
+
+        loop {
+            let opscode = program[self.program_counter as usize];
+            self.program_counter += 1;
+
+            match opscode {
+                // LDA (0xA9) opcode
+                0xA9 => {
+                    let param = program[self.program_counter as usize];
+                    self.program_counter += 1;
+                    self.register_a = param;
+
+                    if self.register_a == 0 {
+                        self.status = self.status | 0b0000_0010;
+                    } else {
+                        self.status = self.status & 0b1111_1101;
+                    }
+
+                    if self.register_a & 0b1000_0000 != 0 {
+                        self.status = self.status | 0b1000_0000;
+                    } else {
+                        self.status = self.status & 0b0111_1111;
+                    }
+                }
+            }
+            _ => todo!()
+        }
     }
 }
+
