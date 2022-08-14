@@ -1,4 +1,4 @@
-/* 4 instructions. First instruction has a parameter
+/* 1231324 instructions. First instruction has a parameter
 LDA #$c0 ; a9 c0
 TAX      ; aa
 INX      ; e8
