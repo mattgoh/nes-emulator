@@ -34,6 +34,15 @@ impl CPU {
     - Execute instruction
     - Repeat cycle
     */
+
+    fn mem_read(%self, addr: u16) -> u8 {
+        self.memory[addr as usize
+    }
+
+    fn mem_write(&mut self, addr: u16, data: u8) {
+        self.memory[addr as usize] = data;
+    }
+
     pub fn new() -> Self {
         CPU {
             register_a: 0,
@@ -55,8 +64,12 @@ impl CPU {
 
     fn update_zero_and_negative_flags(&mut self, result: u8) {
         if result == 0 {
+            // status | 2
+            // if status = 0, then 0 | 2 = 2
             self.status = self.status | 0b0000_0010;
         } else {
+            // status | 253
+            // if status = 0, then 0 & 253 = 0
             self.status = self.status & 0b1111_1101;
         }
 
@@ -80,7 +93,10 @@ impl CPU {
             self.program_counter += 1;
 
         match opscode {
+            // When LDA or TAX is called, the zero and negative flags are updated
+            //
             // LDA (0xA9) opcode
+            // (0xA90) = immediate addressing mode
             0xA9 => {
                 let param = program[self.program_counter as usize];
                 self.program_counter += 1;
@@ -89,12 +105,17 @@ impl CPU {
             }
 
             // TAX (0xAA) opcode
+            // (0xAA) = implied addressing mode
+            // Transfer value of A to X and updating zero and negative flags
             0xAA => self.tax(),
 
-            
+            // INX (0xe8)
+            // Add 1 to register X
+            // implied addressing mode
             0xe8 => self.inx(),
 
             // BRK (0x00) opcode
+            // implied addressing mode
             0x00 => return,
             
             _ => todo!(),
