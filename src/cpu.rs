@@ -35,6 +35,12 @@ impl CPU {
     - Repeat cycle
     */
 
+    /*
+    Memory
+    NES implements von Neumann architecture. Both data and instructions are stored in memory.
+    Executed code is data from CPU perspective. Any data can be interpreted as executable code
+    The only mechanism the CPU has is a program counter register to track the position in instructions stream
+    */
     fn mem_read(%self, addr: u16) -> u8 {
         self.memory[addr as usize
     }
@@ -43,6 +49,27 @@ impl CPU {
         self.memory[addr as usize] = data;
     }
 
+    pub fn load_and_run(&mut self, program: Vec<u8>) {
+        self.load(program);
+        self.run()
+    }
+
+    pub fn load(&mut self, program: Vec<u8>) {
+        self.memory[0x8000 .. (0x8000 + program.len())].copy_from_slice(&program[..]);
+        self.program_counter = 0x8000;
+    }
+
+    pub fn run(mut self) {
+        loop {
+            let opscode = self.mem_read(self.program_counter);
+            self.program_counter += 1;
+
+            match opscode {
+            //
+            }
+        }
+
+    }
     pub fn new() -> Self {
         CPU {
             register_a: 0,
