@@ -89,6 +89,26 @@ impl CPU {
     The only mechanism the CPU has is a program counter register to track the position in instructions stream
     */
 
+    pub fn run(&mut self) {
+        self.run_with_callback(|_| {});
+    }
+
+    pub fn run_with_callback<F>(&mut self, mut callback: F)
+    where
+        F: FnMut(&mut CPU),
+        {
+            let ref opcodes: HashMap<u8, &'static opcodes::OpCode> = *opcodes::OPCODES_MAP;
+
+            loop {
+                callback(self);
+                //....
+                match code {
+                    //...
+                }
+                // ..
+            }
+        }
+
     pub fn new() -> Self {
         CPU {
             register_a: 0,

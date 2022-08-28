@@ -1,0 +1,12 @@
+[package]
+name = "nes_book_emu"
+version = "0.1.0"
+authors = ["Matt and Ian"]
+edition = "2021"
+
+[dependencies]
+lazy_static = "1.4.0"
+bitflags = "1.2.1"
+
+sdl2 = "0.34.0"
+rand = "=0.7.3"
