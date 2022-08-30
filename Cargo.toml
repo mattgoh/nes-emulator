@@ -1,5 +1,5 @@
 [package]
-name = "nes_book_emu"
+name = "nes_book_emulator"
 version = "0.1.0"
 authors = ["Matt and Ian"]
 edition = "2021"
